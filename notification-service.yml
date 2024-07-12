@@ -1,0 +1,79 @@
+server:
+  port: 8040
+spring:
+  data:
+    mongodb:
+      username: mongo
+      password: password
+      host: ${MogodbHost:localhost}
+      port: 27017
+      database: notification
+      authentication-database: admin
+  kafka:
+    consumer:
+      bootstrap-servers: ${KafkaUrl:localhost:9092}
+      group-id: paymentGroup,orderGroup
+      auto-offset-reset: earliest
+      key-deserializer: org.apache.kafka.common.serialization.StringDeserializer
+      value-deserializer: org.springframework.kafka.support.serializer.JsonDeserializer
+      properties:
+        spring.json.trusted.packages: '*'
+        spring.json.type.mapping: orderConfirmation:com.notification.barbershop.kafka.order.OrderConfirmation,paymentConfirmation:com.notification.barbershop.kafka.payment.PaymentConfirmation
+  mail:
+    host: ${MailUrl:localhost}
+    port: 1025
+    username: user
+    password: password
+    properties:
+      mail:
+        smtp:
+          trust: "*"
+        auth: true
+        starttls:
+          enabled: true
+        connectiontimeout: 5000
+        timeout: 3000
+        writetimeout: 5000
+eureka:
+  client:
+    serviceUrl:
+      defaultZone: ${EurekaUrl:http://localhost:8761/eureka}
+
+management:
+  tracing:
+    sampling:
+      probability: 1.0
+    # this is oens all the api gatewayy for aps to connect
+  endpoints:
+    web:
+      exposure:
+        include: "*"
+
+
+#
+#  #    for dockeridsation    include: prometheus
+#management:
+#  tracing:
+#    sampling:
+#      probability: 0.8
+#  endpoints:
+#    web:
+#      exposure:
+#        include: "*"
+##        include: prometheus
+#  zipkin:
+#    tracing:
+#      endpoint: http://localhost:9411/api/v2/spans/
+#
+#
+#
+#logging:
+#  pattern:
+#   level: %5p [${spring.application.name:},%X{traceId:-},%X{spanId:-}]
+#
+## Eureka for docker containers
+#eureka:
+#  client:
+#    serviceUrl:
+#      defaultZone: http://eureka:password@localhost:8761/eureka
+#
