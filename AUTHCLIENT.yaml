@@ -1,0 +1,88 @@
+server:
+  port: 8081
+
+# Eureka registration
+eureka:
+  client:
+    serviceUrl:
+      defaultZone: http://localhost:8761/eureka
+
+
+# this is for zipkin
+management:
+  tracing:
+    sampling:
+      probability: 1.0
+
+
+    # this is oens all the api gatewayy for aps to connect
+#  endpoints:
+#    web:
+#      exposure:
+#        include: "*"
+  # this is for the API gateway route  define which api goes where
+
+spring:
+  application:
+    name: AUTHCLIENT
+  security:
+    oauth2:
+      client:
+        registration:
+          api-client-oidc:
+            provider: spring
+            client-id: api-client
+            client-secret: secret
+            authorization-grant-type: authorization_code
+            redirect-uri: "http://127.0.0.1:8081/login/oauth2/code/{registrationId}"
+            scope: openid,profile
+            client-name: api-client-oidc
+          api-client-authorization-code:
+            provider: spring
+            client-id: api-client
+            client-secret: secret
+            authorization-grant-type: authorization_code
+            redirect-uri: "http://127.0.0.1:8081/authorized"
+            scope: api.read
+            client-name: api-client-authorization-code
+        provider:
+          spring:
+            issuer-uri: http://amberex-HP:9000
+
+  datasource:
+    driver-class-name: org.postgresql.Driver
+    url: jdbc:postgresql://localhost:5432/barbershop
+    username: postgres
+    password: password
+  jpa:
+    hibernate:
+      ddl-auto: none  #create-drop
+    database: postgresql
+    database-platform: org.hibernate.dialect.PostgreSQLDialect
+
+
+logging:
+  level:
+    root:
+      root: INFO
+    org:
+      springframework:
+        cloud:
+          gateway:
+            route:
+              RouteDefinitionLocator: INFO
+
+
+
+
+        # this is use when configurer is used
+        # https://medium.com/@ankithahjpgowda/api-gateway-in-spring-boot-3ea804003021#:~:text=API%20Gateway%20%E2%80%94%20receives%20incoming%20requests,that%20takes%20care%20of%20authentication
+#spring:
+#  application:
+#    name: API-gateway
+#  config:
+#    import: "optional: configserver: http://localhost:8088"
+
+
+
+

@@ -45,8 +45,3 @@ spring:
   main:
     allow-bean-definition-overriding: true
 
-  security:
-    oauth2:
-      resourceserver:
-        jwt:
-          issuer-uri: ${SecurityIssuerUri:http://amberex-HP:9000}

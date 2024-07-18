@@ -6,13 +6,14 @@ server:
 eureka:
   client:
     serviceUrl:
-      defaultZone:  ${EurekaUrl:http://localhost:8761/eureka}
+      defaultZone: ${EurekaUrl:http://localhost:8761/eureka}
 
 management:
   tracing:
     sampling:
       probability: 1.0
     # this is oens all the api gatewayy for aps to connect
+
   endpoints:
     web:
       exposure:
@@ -34,11 +35,7 @@ spring:
     generate-ddl: true
     database: postgresql
 
-  security:
-    oauth2:
-      resourceserver:
-        jwt:
-          issuer-uri: ${SecurityIssuerUri:http://amberex-HP:9000}
+
 
   thymeleaf:
     prefix: classpath:/templates/

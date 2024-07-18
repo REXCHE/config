@@ -5,19 +5,16 @@ server:
 spring:
   datasource:
     driver-class-name: org.postgresql.Driver
-    url: ${PostgresUrl:jdbc:postgresql://localhost:5432/barbershop}
-#    url: jdbc:postgresql://localhost:5432/barbershop
+    url: jdbc:postgresql://localhost:5432/barbershop
     username: postgres
     password: password
     initialization-mode: always
     schema: classpath:schema.sql
 
-
-
-#  sql:
-#    init:
-#      mode: always
-#      schema-locations: classpath:schema.sql
+  sql:
+    init:
+      mode: always
+      schema-locations: classpath:schema.sql
 #  jpa:
 #    hibernate:
 #      ddl-auto: update
@@ -26,7 +23,7 @@ spring:
 #
   jpa:
     hibernate:
-      ddl-auto: create-drop
+      ddl-auto: none #create-drop
     show-sql: true
     database: postgresql
     database-platform: org.hibernate.dialect.PostgreSQLDialect
