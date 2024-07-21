@@ -24,10 +24,10 @@ application:
     customer-url: ${customerUrl:http://localhost:8766/api/v1/customers}  #providers services and notifications orders and payments
     payment-url: ${paymentUrl:http://localhost:8060/api/v1/payments}  # check ports
     servicesProvider-url: ${servicesProviderUrl:http://localhost:8767/api/v1/services}
-eureka:
-  client:
-    serviceUrl:
-      defaultZone: ${EurekaUrl:http://localhost:8761/eureka}
+#eureka:
+#  client:
+#    serviceUrl:
+#      defaultZone: ${EurekaUrl:http://localhost:8761/eureka}
 
 management:
   tracing:

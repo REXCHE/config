@@ -3,29 +3,27 @@
 server:
   port: 8766
 
-eureka:
-  client:
-    serviceUrl:
-      defaultZone: ${EurekaUrl:http://localhost:8761/eureka}
+#eureka:
+#  client:
+#    serviceUrl:
+#      defaultZone: ${EurekaUrl:http://localhost:8761/eureka}
 
 management:
   tracing:
     sampling:
       probability: 1.0
     # this is oens all the api gatewayy for aps to connect
-
   endpoints:
     web:
       exposure:
         include: "*"
 
 
-
 # PostgreSQL configuration.
 spring:
-  application:
-    nameUser: UserInterface
-    name: UserInterface
+#  application:
+#    nameUser: UserInterface
+#    name: UserInterface
   datasource:
     url: ${PostgresUrl:jdbc:postgresql://localhost:5432/barbershop}
     username: postgres

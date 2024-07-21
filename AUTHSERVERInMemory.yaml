@@ -13,7 +13,6 @@ spring:
     schema: classpath:schema.sql
 
 
-
 #  sql:
 #    init:
 #      mode: always
@@ -24,6 +23,7 @@ spring:
 #    database: postgresql
 #    database-platform: org.hibernate.dialect.PostgreSQLDialect
 #
+
   jpa:
     hibernate:
       ddl-auto: create-drop
@@ -55,6 +55,7 @@ spring:
 #                - openid
 #                - api.read
 #                - profile
+
 
 logging:
   level:

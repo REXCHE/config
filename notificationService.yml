@@ -34,10 +34,11 @@ spring:
         connectiontimeout: 5000
         timeout: 3000
         writetimeout: 5000
-eureka:
-  client:
-    serviceUrl:
-      defaultZone: ${EurekaUrl:http://localhost:8761/eureka}
+
+#eureka:
+#  client:
+#    serviceUrl:
+#      defaultZone: ${EurekaUrl:http://localhost:8761/eureka}
 
 management:
   tracing:
