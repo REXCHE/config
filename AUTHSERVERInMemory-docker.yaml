@@ -1,0 +1,79 @@
+
+server:
+  port: 9000
+
+spring:
+  datasource:
+    driver-class-name: org.postgresql.Driver
+    url: jdbc:postgresql://postgres:5432/barbershop
+#    url: jdbc:postgresql://localhost:5432/barbershop
+    username: postgres
+    password: password
+    initialization-mode: always
+    schema: classpath:schema.sql
+
+
+#  sql:
+#    init:
+#      mode: always
+#      schema-locations: classpath:schema.sql
+#  jpa:
+#    hibernate:
+#      ddl-auto: update
+#    database: postgresql
+#    database-platform: org.hibernate.dialect.PostgreSQLDialect
+#
+
+  jpa:
+    hibernate:
+      ddl-auto: create-drop
+    show-sql: true
+    database: postgresql
+    database-platform: org.hibernate.dialect.PostgreSQLDialect
+    generate-ddl: true
+
+
+#  security:
+#    oauth2:
+#      authorizationserver:
+#        issuer: http://amberex-HP:9000
+#        client:
+#          api-client:
+#            registration:
+#              client-id: api-client
+#              client-secret: "{noop}secret"
+#              client-name: Api Client
+#              client-authentication-methods:
+#                - client_secret_basic
+#              authorization-grant-types:
+#                - authorization_code
+#                - refresh_token
+#              redirect-uris:
+#                - http://127.0.0.1:8080/login/oauth2/code/api-client-oidc
+#                - http://127.0.0.1:8080/authorized
+#              scopes:
+#                - openid
+#                - api.read
+#                - profile
+
+
+logging:
+  level:
+    root: INFO
+    org.springframework.web: INFO
+    org.springframework.security: INFO
+    org.springframework.security.oauth2: INFO
+
+eureka:
+  client:
+    serviceUrl:
+      defaultZone: http://discoveryserver:8761/eureka
+    registerWithEureka: true
+    fetchRegistry: true
+
+redirectUrl:
+  RegisteredClient:
+    api-client-iodc: http://apigatewayclientinmemory:8080/login/oauth2/code/api-client-oidc
+    Authorized: http://apigatewayclientinmemory:8080/authorized
+    logOut: http://apigatewayclientinmemory:8080/
+    ProviderIsuer: http://authserverinmemory:9000

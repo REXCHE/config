@@ -1,0 +1,47 @@
+server:
+  port: 8070
+spring:
+  datasource:
+    driver-class-name: org.postgresql.Driver
+    url: dbc:postgresql://postgres:5432/barbershop
+    username: postgres
+    password: password
+  jpa:
+    hibernate:
+      ddl-auto: create-drop
+    database: postgresql
+    database-platform: org.hibernate.dialect.PostgreSQLDialect
+  kafka:
+    producer:
+      bootstrap-servers: broker:29092
+      key-serializer: org.apache.kafka.common.serialization.StringSerializer
+      value-serializer: org.springframework.kafka.support.serializer.JsonSerializer
+      properties:
+        spring.json.type.mapping: orderConfirmation:com.orders.CustomerOrders.kafka.OrderConfirmation
+
+application:
+  config:
+    customer-url: http://userinterface:8766/api/v1/customers  #providers services and notifications orders and payments
+    payment-url: http://paymentservice:8060/api/v1/payments  # check ports
+    servicesProvider-url: http://barberdashboard:8767/api/v1/services
+
+
+management:
+  tracing:
+    sampling:
+      probability: 1.0
+    # this is oens all the api gatewayy for aps to connect
+  endpoints:
+    web:
+      exposure:
+        include: "*"
+
+
+eureka:
+  client:
+    serviceUrl:
+      defaultZone: http://discoveryserver:8761/eureka
+    registerWithEureka: true
+    fetchRegistry: true
+
+

@@ -1,0 +1,56 @@
+# the name of the service and the file name o  this congiguration should be the same
+
+server:
+  port: 8767
+
+#eureka:
+#  client:
+#    serviceUrl:
+#      defaultZone: ${EurekaUrl:http://localhost:8761/eureka}
+
+management:
+  tracing:
+    sampling:
+      probability: 1.0
+
+    # this is opens all the api gatewayy for aps to connect
+  endpoints:
+    web:
+      exposure:
+        include: "*"
+
+
+
+spring:
+  application:
+    name: BarberDashboard
+
+  datasource:
+    driver-class-name: org.postgresql.Driver
+    url: jdbc:postgresql://postgres.default.svc.cluster.local:5432/barbershop
+    #    url: jdbc:postgresql://localhost:5432/barbershop
+    username: postgres
+    password: password
+  jpa:
+    hibernate:
+      ddl-auto: create-drop
+    database-platform: org.hibernate.dialect.PostgreSQLDialect
+    #
+    generate-ddl: true
+    database: postgresql
+
+    defer-datasource-initialization: true
+  sql:
+    init.mode: always
+  main:
+    allow-bean-definition-overriding: true
+
+  # spring security issuer
+
+  security:
+  oauth2:
+    resourceserver:
+      jwt:
+        issuer-uri:  http://authserver.default.svc.cluster.local:9000
+
+

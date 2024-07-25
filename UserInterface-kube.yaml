@@ -6,7 +6,10 @@ server:
 #eureka:
 #  client:
 #    serviceUrl:
-#      defaultZone: ${EurekaUrl:http://localhost:8761/eureka}
+#      defaultZone: http://discoveryServer:8761/eureka
+#    registerWithEureka: true
+#    fetchRegistry: true
+
 
 management:
   tracing:
@@ -17,15 +20,15 @@ management:
     web:
       exposure:
         include: "*"
-  
+
 
 # PostgreSQL configuration.
 spring:
-#  application:
-#    nameUser: UserInterface
-#    name: UserInterface
+  #  application:
+  #    nameUser: UserInterface
+  #    name: UserInterface
   datasource:
-    url: ${PostgresUrl:jdbc:postgresql://localhost:5432/barbershop}
+    url: jdbc:postgresql://postgres:5432/barbershop
     username: postgres
     password: password
   #addded
@@ -37,5 +40,11 @@ spring:
   thymeleaf:
     prefix: classpath:/templates/
     suffix: .html
+
+  security:
+  oauth2:
+    resourceserver:
+      jwt:
+        issuer-uri:  http://authserver:9000
 
 

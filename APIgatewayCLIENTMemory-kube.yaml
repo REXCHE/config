@@ -1,0 +1,205 @@
+server:
+  port: 8080
+
+
+
+  # this is oens all the api gatewayy for aps to connect
+  #  endpoints:
+  #    web:
+  #      exposure:
+  #        include: "*"
+  # this is for the API gateway route  define which api goes where
+#  this i spring cloud gateway server and mvc code https://github.com/spring-cloud/spring-cloud-gateway/blob/main/spring-cloud-gateway-server-mvc/src/main/java/org/springframework/cloud/gateway/server/mvc/predicate/GatewayRequestPredicates.java
+# implement spring clod gateway https://cloud.spring.io/spring-cloud-gateway/reference/html/#gateway-starter
+spring:
+  application:
+    name: APIgatewayCLIENTMemory
+    gateway:
+      MVC:
+        enabled: true  # this is for the MVC https://docs.spring.io/spring-cloud-gateway/reference/spring-cloud-gateway-server-mvc/filters/tokenrelay.html
+        default-filters:
+          - TokenRelay=
+        routes:
+
+
+          #          Redirect URI Configuration from gpt
+          #          When setting up your Authorization Server (e.g., Keycloak, Auth0, or a custom OAuth2 server), ensure that the redirect URIs
+          #          are configured to go through the API Gateway. For example:
+          #
+          #          Original redirect URI: http://auth-server:9000/callback
+          #          Gateway redirect URI: http://api-gateway/auth/callback
+          #          Update your Authorization Server's client configuration to use the API Gateway’s address for redirect URIs.
+
+
+          - id: AUTHSERVER0
+            uri: http://authserver
+            #          uri: lb://UserInterface
+            predicates:
+              - Path=/oauth2/**
+
+          - id: AUTHSERVER1
+            uri: http://authserver
+            #          uri: lb://UserInterface
+            predicates:
+              - Path=/login
+
+          #          - id: AUTHSERVER2
+          #            uri: lb://AUTHSERVERInMemory
+          #            predicates:
+          #              - Path=/consent
+
+          - id: UserInterface
+            uri: http://userinterface
+            predicates:
+              - Path=/api/v1/consumers/**
+          #            filters:
+          #              - SetPath=/api/v1/consumers/**
+
+          - id: BarberDashboard
+            uri: http://barberdashboard   #  # the names here are the spring application names not the project artifactId
+            predicates:
+              - Path=/api/v1/services/**
+          #            filters:
+          #              - SetPath=/api/v1/services/**
+
+          - id: notification-service
+            uri: http://notificationservice
+            predicates:
+              - Path=/api/v1/notifications/**
+          - id: order-service
+            uri: http://orderservice
+            predicates:
+              - Path=/api/v1/notifications/**
+          - id: payment-service
+            uri: http://paymentservice
+            #          uri: lb://payment-service
+            predicates:
+              - Path=/api/v1/payments/**
+
+              #          - id: APIgatewayCLIENT
+              #            uri: http://localhost:8080
+              #            predicates:
+              #              - Path=/**
+              #          filters:
+  #              - SetPath=/AUTHCLIENT/
+
+
+  #  from gpt when using api gateway redirect
+  #  spring:
+  #    security:
+  #      oauth2:
+  #        client:
+  #          registration:
+  #            api-client:
+  #              provider: auth-server
+  #              client-id: my-client-id
+  #              client-secret: my-client-secret
+  #              redirect-uri: "{baseUrl}/auth/callback"
+  #              authorization-grant-type: authorization_code
+  #              scope: openid, profile
+  #          provider:
+  #            auth-server:
+  #              issuer-uri: http://api-gateway/auth
+  #  security:
+  #    oauth2:
+  #      client:
+  #        provider:
+  #          spring:
+  #            issuer-uri:
+
+  security:
+    oauth2:
+      client:
+        registration:
+          api-client-oidc:
+            provider: spring
+            client-id: api-client
+            client-secret: secret
+            authorization-grant-type: authorization_code    # redirect-uri: "{baseUrl}/login/oauth2/code/{registrationId}"  "http://127.0.0.1:8080/login/oauth2/code/api-client-oidc"
+            redirect-uri: "http://api-gateway.default.svc.cluster.local:8080/login/oauth2/code/{registrationId}"   #"http://127.0.0.1:8080/login/oauth2/code/{registrationId}"
+            scope: openid      #/oauth2/authorization/api-client-oidc
+            #            scope: openid,email,profile
+            client-name: api-client-oidc
+          api-client-authorization-code:
+            provider: spring
+            client-id: api-client
+            client-secret: secret
+            authorization-grant-type: authorization_code
+            redirect-uri: "http://api-gateway.default.svc.cluster.local:8080/authorized"
+            scope: api.read
+            client-name: api-client-authorization-code
+        provider:
+          spring:
+            issuer-uri: http://authserver.default.svc.cluster.local:9000
+
+  datasource:
+    driver-class-name: org.postgresql.Driver
+    url: jdbc:postgresql://postgres.default.svc.cluster.local:5432/barbershop
+    #    url: jdbc:postgresql://localhost:5432/barbershop
+    username: postgres
+    password: password
+  jpa:
+    hibernate:
+      ddl-auto: create-drop
+    database: postgresql
+    database-platform: org.hibernate.dialect.PostgreSQLDialect
+
+
+
+
+  #    for dockeridsation    include: prometheus # this is for zipkin
+management:
+  tracing:
+    sampling:
+      probability: 0.8
+  endpoints:
+    web:
+      exposure:
+        include: prometheus
+  zipkin:
+    tracing:
+      endpoint: http://zipkin.default.svc.cluster.local:9411
+
+
+
+logging:
+  level:
+    root:
+      root: INFO
+    org:
+      springframework:
+        cloud:
+          gateway:
+            route:
+              RouteDefinitionLocator: INFO
+
+
+        #
+        #  config:
+        #    import: "optional:configserver:http://configserver:8088"
+
+
+        #  profiles:
+        #    active: docker
+        #    this select the silename-docker.properties in the configServer repo
+        #spring.cloud.config.profile= docker
+        #  cloud:
+        #     config:
+        #       profile: docker
+
+        #spring.config.import = configserver:http://configServer:8088
+
+        # this is use when configurer is used
+        # https://medium.com/@ankithahjpgowda/api-gateway-in-spring-boot-3ea804003021#:~:text=API%20Gateway%20%E2%80%94%20receives%20incoming%20requests,that%20takes%20care%20of%20authentication
+#spring:
+#  application:
+#    name: API-gateway
+#  config:
+#    import: "optional: configserver: http://localhost:8088"
+
+
+
+
+#https://stackoverflow.com/questions/75270769/spring-boot-3-access-to-well-known-openid-configuration-from-docker-times-out:
+
+
