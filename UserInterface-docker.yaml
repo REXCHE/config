@@ -42,9 +42,9 @@ spring:
     suffix: .html
 
   security:
-  oauth2:
-    resourceserver:
-      jwt:
-        issuer-uri:  http://authserverinmemory:9000
+    oauth2:
+      resourceserver:
+        jwt:
+          issuer-uri: http://authserverinmemory:9000
 
 

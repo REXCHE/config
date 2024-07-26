@@ -40,11 +40,12 @@ spring:
   thymeleaf:
     prefix: classpath:/templates/
     suffix: .html
-
   security:
-  oauth2:
-    resourceserver:
-      jwt:
-        issuer-uri:  http://authserver:9000
+    oauth2:
+      resourceserver:
+        jwt:
+          issuer-uri: http://authserver:9000
+
+
 
 
