@@ -44,7 +44,7 @@ spring:
     oauth2:
       resourceserver:
         jwt:
-          issuer-uri: http://authserver:9000
+          issuer-uri: http://authserver.default.svc.cluster.local:9000
 
 
 

@@ -42,7 +42,7 @@ management:
   tracing:
     sampling:
       probability: 1.0
-    # this is oens all the api gatewayy for aps to connect
+    # this is oens all the api gateway for aps to connect
   endpoints:
     web:
       exposure:

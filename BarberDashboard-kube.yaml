@@ -45,12 +45,8 @@ spring:
   main:
     allow-bean-definition-overriding: true
 
-  # spring security issuer
-
   security:
-  oauth2:
-    resourceserver:
-      jwt:
-        issuer-uri:  http://authserver.default.svc.cluster.local:9000
-
-
+    oauth2:
+      resourceserver:
+        jwt:
+          issuer-uri: http://authserver.default.svc.cluster.local:9000

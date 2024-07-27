@@ -44,14 +44,11 @@ spring:
     init.mode: always
   main:
     allow-bean-definition-overriding: true
-
-# spring security issuer
-
   security:
-  oauth2:
-     resourceserver:
+    oauth2:
+      resourceserver:
         jwt:
-         issuer-uri:  http://authserverinmemory:9000
+          issuer-uri:  http://authserverinmemory:9000
 
 
 eureka:
