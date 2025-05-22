@@ -42,6 +42,8 @@ spring:
             #          uri: lb://UserInterface
             predicates:
               - Path=/login
+            filters:
+              - SetPath=/oauth2/login
 
           #          - id: AUTHSERVER2
           #            uri: lb://AUTHSERVERInMemory
