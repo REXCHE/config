@@ -56,6 +56,13 @@ spring:
               - Path=/api/v1/consumers/**
           #            filters:
           #              - SetPath=/api/v1/consumers/**
+          
+          - id: UserInterface1
+            uri: lb://userinterface
+            predicates:
+              - Path=/
+            filters:
+              - SetPath=/api/v1/consumers/
 
           - id: BarberDashboard
             uri: lb:barberdashboard   #  # the names here are the spring application names not the project artifactId
