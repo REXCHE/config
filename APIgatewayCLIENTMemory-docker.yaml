@@ -41,7 +41,7 @@ spring:
             uri: lb://authserverinmemory
             #          uri: lb://UserInterface
             predicates:
-              - Path=/login
+              - Path=/api/v1/consumers/loginPage
             filters:
               - SetPath=/oauth2/login
 
@@ -50,6 +50,13 @@ spring:
           #            predicates:
           #              - Path=/consent
 
+            - id: UserInterface1
+            uri: lb://userinterface
+            predicates:
+              - Path=/
+            filters:
+              - SetPath=/api/v1/consumers/
+
           - id: UserInterface
             uri: lb://userinterface
             predicates:
@@ -57,12 +64,7 @@ spring:
           #            filters:
           #              - SetPath=/api/v1/consumers/**
           
-          - id: UserInterface1
-            uri: lb://userinterface
-            predicates:
-              - Path=/
-            filters:
-              - SetPath=/api/v1/consumers/
+
 
           - id: BarberDashboard
             uri: lb:barberdashboard   #  # the names here are the spring application names not the project artifactId
