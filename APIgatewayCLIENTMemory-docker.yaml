@@ -55,7 +55,7 @@ spring:
             predicates:
               - Path=/
             filters:
-              - SetPath=/api/v1/consumers/
+              - SetPath=/api/v1/consumers/index.html
 
           - id: UserInterface
             uri: lb://userinterface
